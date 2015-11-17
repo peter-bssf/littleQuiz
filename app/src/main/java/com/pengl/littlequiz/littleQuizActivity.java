@@ -9,11 +9,39 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class littleQuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mNextButton;
+    private Question[] mQuestions = new Question[] {
+            new Question(R.string.question_text, true),
+            new Question(R.string.question_africa, false),
+            new Question(R.string.question_americas, true),
+            new Question(R.string.question_asia, true),
+            new Question(R.string.question_mideast, false)
+    };
+    private int mCurrentIndex = 0;
+    private TextView mQuesTextView;
+
+    private void checkAnswer(boolean userPressed){
+        boolean answerIsTrue = mQuestions[mCurrentIndex].isQuestionIsTrue();
+        int messageId;
+        if(userPressed == answerIsTrue){
+            messageId = R.string.correct_toast;
+        } else {
+            messageId = R.string.incorrect_toast;
+        }
+        Toast.makeText(littleQuizActivity.this, messageId, Toast.LENGTH_SHORT).show();
+    }
+
+    private void updateQuestion(){
+        int resId = mQuestions[mCurrentIndex].getTextResId();
+
+        mQuesTextView.setText(resId);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +63,7 @@ public class littleQuizActivity extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(littleQuizActivity.this, R.string.correct_toast, Toast.LENGTH_SHORT).show();
+                checkAnswer(true);
             }
         });
 
@@ -43,9 +71,21 @@ public class littleQuizActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(littleQuizActivity.this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
+                checkAnswer(false);
             }
         });
+
+        mQuesTextView = (TextView)findViewById(R.id.question_text);
+        mNextButton = (Button) findViewById(R.id.next_button);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1)%mQuestions.length;
+                updateQuestion();
+            }
+        });
+
+        updateQuestion();
     }
 
     @Override
