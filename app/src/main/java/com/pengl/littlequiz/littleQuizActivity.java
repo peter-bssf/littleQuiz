@@ -28,6 +28,7 @@ public class littleQuizActivity extends AppCompatActivity {
     private int mCurrentIndex = 0;
     private TextView mQuesTextView;
     private static final String TAG = "littleQuiz";
+    private static final String KEY_INDEX = "Index";
 
     private void checkAnswer(boolean userPressed){
         boolean answerIsTrue = mQuestions[mCurrentIndex].isQuestionIsTrue();
@@ -110,7 +111,18 @@ public class littleQuizActivity extends AppCompatActivity {
                 updateQuestion();
             }
         });
+
+        if(savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
+
         updateQuestion();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
     @Override
