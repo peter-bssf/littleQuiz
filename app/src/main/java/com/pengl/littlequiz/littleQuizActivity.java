@@ -77,6 +77,14 @@ public class littleQuizActivity extends AppCompatActivity {
         });
 
         mQuesTextView = (TextView)findViewById(R.id.question_text);
+        mQuesTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1)%mQuestions.length;
+                updateQuestion();
+            }
+        });
+
         mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
