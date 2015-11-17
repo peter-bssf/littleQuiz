@@ -1,5 +1,6 @@
 package com.pengl.littlequiz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -31,12 +32,20 @@ public class littleQuizActivity extends AppCompatActivity {
     private TextView mQuesTextView;
     private static final String TAG = "littleQuiz";
     private static final String KEY_INDEX = "Index";
+    private static final String KEY_CHEAT = "Cheat";
+    private boolean[] mCheated = new boolean[] {false, false, false, false, false};
 
     private void checkAnswer(boolean userPressed){
         boolean answerIsTrue = mQuestions[mCurrentIndex].isQuestionIsTrue();
+        boolean cheat = mCheated[mCurrentIndex];
         int messageId;
+
         if(userPressed == answerIsTrue){
-            messageId = R.string.correct_toast;
+            if(cheat) {
+                messageId = R.string.judge_toast;
+            } else {
+                messageId = R.string.correct_toast;
+            }
         } else {
             messageId = R.string.incorrect_toast;
         }
@@ -118,14 +127,15 @@ public class littleQuizActivity extends AppCompatActivity {
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(littleQuizActivity.this, CheatActivity.class);
-                i.putExtra(CheatActivity.EXTRA_ANSWER, mQuestions[mCurrentIndex].isQuestionIsTrue());
-                startActivity(i);
+                boolean answerIsTrue = mQuestions[mCurrentIndex].isQuestionIsTrue();
+                Intent i = CheatActivity.newIntent(littleQuizActivity.this, answerIsTrue);
+                startActivityForResult(i, 0);
             }
         });
 
         if(savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mCheated      = savedInstanceState.getBooleanArray(KEY_CHEAT);
         }
 
         updateQuestion();
@@ -135,6 +145,17 @@ public class littleQuizActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+        savedInstanceState.putBooleanArray(KEY_CHEAT, mCheated);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data == null || resultCode != Activity.RESULT_OK)
+            return;
+
+        if(requestCode == 0) {
+            mCheated[mCurrentIndex] = CheatActivity.wasAnswerShow(data);
+        }
     }
 
     @Override
