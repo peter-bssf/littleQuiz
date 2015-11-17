@@ -1,5 +1,6 @@
 package com.pengl.littlequiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ public class littleQuizActivity extends AppCompatActivity {
     private Button mFalseButton;
     private Button mNextButton;
     private Button mPrevButton;
+    private Button mCheatButton;
     private Question[] mQuestions = new Question[] {
             new Question(R.string.question_text, true),
             new Question(R.string.question_africa, false),
@@ -109,6 +111,16 @@ public class littleQuizActivity extends AppCompatActivity {
                     mCurrentIndex -= 1;
                 }
                 updateQuestion();
+            }
+        });
+
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(littleQuizActivity.this, CheatActivity.class);
+                i.putExtra(CheatActivity.EXTRA_ANSWER, mQuestions[mCurrentIndex].isQuestionIsTrue());
+                startActivity(i);
             }
         });
 

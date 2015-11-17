@@ -15,6 +15,12 @@
     tools:showIn="@layout/activity_little_quiz"
     tools:context=".littleQuizActivity">
 
+    <Button
+        android:id="@+id/cheat_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cheat_button"
+        android:layout_gravity="top|left"/>
     <TextView
         android:id="@+id/question_text"
         android:padding="24dp"
