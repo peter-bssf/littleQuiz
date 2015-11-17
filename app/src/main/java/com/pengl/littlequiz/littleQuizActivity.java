@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public class littleQuizActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
     private TextView mQuesTextView;
+    private static final String TAG = "littleQuiz";
 
     private void checkAnswer(boolean userPressed){
         boolean answerIsTrue = mQuestions[mCurrentIndex].isQuestionIsTrue();
@@ -50,6 +52,8 @@ public class littleQuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_little_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.i(TAG, "onCreate");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +112,31 @@ public class littleQuizActivity extends AppCompatActivity {
         });
         updateQuestion();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy");
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
