@@ -16,6 +16,7 @@ public class littleQuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
     private Question[] mQuestions = new Question[] {
             new Question(R.string.question_text, true),
             new Question(R.string.question_africa, false),
@@ -85,6 +86,18 @@ public class littleQuizActivity extends AppCompatActivity {
             }
         });
 
+        mPrevButton = (Button) findViewById(R.id.prev_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCurrentIndex == 0) {
+                    mCurrentIndex = mQuestions.length - 1;
+                } else {
+                    mCurrentIndex -= 1;
+                }
+                updateQuestion();
+            }
+        });
         updateQuestion();
     }
 
